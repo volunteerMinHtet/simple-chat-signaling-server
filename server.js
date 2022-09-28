@@ -1,12 +1,14 @@
 import http from "http";
 import websocket from "websocket";
 
+const indexPage = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Document</title></head><body><h1>Hello</h1></body></html>`;
+
 const PORT = process.env.PORT || 8080;
 
 const httpServer = http.createServer((req, res) => {
   console.log(new Date() + " Received request for " + req.url);
-  res.writeHead(404);
-  res.end();
+  res.writeHead(200);
+  res.end(indexPage);
 });
 
 httpServer.listen(PORT, () => {
