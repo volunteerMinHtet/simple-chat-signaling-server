@@ -23,28 +23,20 @@ let clients = [];
 wsServer.on("request", (request) => {
   const connection = request.accept();
   const id = Math.floor(Math.random() * 100);
-  console.log(id);
 
   clients.forEach((client) =>
     client?.connection?.send(
-      JSON.stringify({ client: id, text: "A new user connected" })
+      JSON.stringify({ client: id, text: `A new user connected (ID - ${id})` })
     )
   );
 
   clients.push({ connection, id });
-  console.log(clients.length);
 
   connection.on("message", (message) => {
+    console.log(message);
     clients
       .filter((client) => client?.id !== id)
-      .forEach((client) =>
-        client?.connection?.send(
-          JSON.stringify({
-            client: id,
-            text: message?.utf8Data,
-          })
-        )
-      );
+      .forEach((client) => client?.connection?.send(message.utf8Data));
   });
 
   connection.on("close", () => {
@@ -53,7 +45,7 @@ wsServer.on("request", (request) => {
       client.connection.send(
         JSON.stringify({
           client: id,
-          text: "I disconnected",
+          text: `(ID - ${id}) User disconnected`,
         })
       )
     );
